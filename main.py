@@ -4,6 +4,7 @@ import copy
 
 ##CS441/541
 ##tested on 2.7
+#Sunanth Sakthivel
 
 ##utility function to print 2d array
 def print_twod_array(playboard):
@@ -21,8 +22,8 @@ def get_positions(board, player):
                list_of_coordinates.append((index_row, index_col))
    return list_of_coordinates
 
-##This utility function will return all the valid board states that can be 
-##made from a player's move. 
+##This utility function will return all the valid board states that can be
+##made from a player's move.
 ##returns a list of moves that is used when generating the children
 ##this function will essentially call the move function on all the player'
 ##pawns in order to generate all the move possibilities.
@@ -44,7 +45,7 @@ def valid_position(length, row, col):
    return False
 
 ##This is a utility function that will actually move the player's pawn in all
-##its possibilities and return the list of board states that are a result of 
+##its possibilities and return the list of board states that are a result of
 ##that pawn moving.
 def move(board, row, col):
    list_of_move = []
@@ -139,21 +140,21 @@ def end_state(pmove,player):
                 return 10
     return 0
 
-##this is a utility function to convert a string input from user into a 
+##this is a utility function to convert a string input from user into a
 ##2d array.
 def parsing(player_input):
     final = []
     my_list = []
     my_string = player_input
     my_list = my_string.split(';')
-    
+
     for elem in my_list:
         temp = elem.split(',')
         final.append(temp)
-        
+
     return final
 
-##this is the node class that will hold all the necessary information to 
+##this is the node class that will hold all the necessary information to
 ##expand out a minimax tree.
 class Node(object):
  def __init__(self, depth, player, board, value):
@@ -161,16 +162,16 @@ class Node(object):
    self.player = player ##this is the current player's turn 'B' or 'W'
    self.board = board   ##this is a 2d array representing the current board
    self.value = value   ##this is the minimax value of the node
-   self.children = []   ##this is the array of nodes representing children 
+   self.children = []   ##this is the array of nodes representing children
    self.createchildren()    ##function to generate children
- 
+
  ##this function will create children by recieving all the possible moves that
  ##can be made by the player's pawns (using the generate_move function) and then
  ##loading the information into children. Notice the createchildren function
  ##is in the constructor of the node class and therefore children will be made
  ##in this recursive manner.
  def createchildren(self):
-   ##stopping condition is if we are at the max depth or if a node is a final state.     
+   ##stopping condition is if we are at the max depth or if a node is a final state.
    if self.depth > 0 and abs(self.value) != 10:
      list_moves = generate_move(self.board, self.player)
      for moves in list_moves:
@@ -178,9 +179,9 @@ class Node(object):
          self.children.append(Node(self.depth-1, 'W', moves, self.calc_val(moves, self.depth-1, 'W') ))
        else:
          self.children.append(Node(self.depth-1, 'B', moves, self.calc_val(moves, self.depth-1, 'B') ))
- 
- ##this function is called when generating children to assign minimax values for 
- ##each node. 
+
+ ##this function is called when generating children to assign minimax values for
+ ##each node.
  def calc_val(self, move, depth, player):
    ##The first if-elf block will check to see if the nodes are terminal states
    ##and if so the minimax values are set for these nodes.
@@ -189,7 +190,7 @@ class Node(object):
        return -10
      for i in range(0,len(move)):
        if move[(len(move)-1)][i] == 'W':
-         return -10   
+         return -10
    else:
      if not generate_move(move,player):
        return 10
@@ -197,7 +198,7 @@ class Node(object):
        if move[0][i] == 'B':
          return 10
 
-   ##Otherwise, if the depth cutoff is reached then these nodes must be 
+   ##Otherwise, if the depth cutoff is reached then these nodes must be
    ##evaluated using the heuristic function (difference). Else we just assign
    ##the node with a temporary dummy minimax value of 1000 (this will be changed once the minimax alg is run)
    if depth == 0:
@@ -225,11 +226,11 @@ def minimax(node, depth, player):
             optimal = value
         elif player == 'W' and optimal > value:
             optimal = value
-  
+
     node.value = optimal    ##this will essentially assign the parent node with optimal minimax val.
     return optimal
 
-##this utility function is for debugging purposes but it prints the node values 
+##this utility function is for debugging purposes but it prints the node values
 ##of the tree
 def print_path(node):
     print(node.board)
@@ -249,7 +250,7 @@ def inorder(node):
         return
     for child in node.children:
         inorder(child)
-        
+
 
 ##this is main and where the game will essentially be played.
 if __name__ == '__main__':
@@ -282,11 +283,11 @@ if __name__ == '__main__':
  ##minimax(initial_state, depth, player)
  ##inorder(initial_state)
  ##print_path(initial_state)
- 
- 
+
+
  ##this is where the player plays againt the AI bot
- 
- ##player inputs move by typing the following for example: 0,W,0;W,B,W;B,0,B   
+
+ ##player inputs move by typing the following for example: 0,W,0;W,B,W;B,0,B
  endgame = 0
  print_twod_array(playboard)
 
